@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html ng-app="rxApp">
+  <head>
+    <title>Rx App</title>
+  </head>
+  <body>
+    <h1>Rx App Goes Here!</h1>
+    <div id="react_entry"></div>
+    <div id="backbone_entry"></div>
+    <div ng-controller="RxAppController as rxApp">
+      <p>{{rxApp.message}}</p>
+    </div>
+    <script src="react_bundle.js" type="text/javascript"></script>
+    <script src="angular_bundle.js" type="text/javascript"></script>
+    <script src="backbone_bundle.js" type="text/javascript"></script>
+    <script src="styles_bundle.js" type="text/javascript"></script>
+  </body>
+</html>

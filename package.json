@@ -1,0 +1,46 @@
+{
+  "name": "programming-challenge-ui",
+  "version": "1.0.0",
+  "description": "We have included a dataset that contains an array of patients and their prescriptions. Create an API that serves this data to a UI that displays the information for a single patient at a time. Use whatever tools and technologies that you want.",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scriptdash/programming-challenge-ui.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scriptdash/programming-challenge-ui/issues"
+  },
+  "homepage": "https://github.com/scriptdash/programming-challenge-ui#readme",
+  "dependencies": {
+    "angular": "^1.6.0",
+    "angular-route": "^1.6.0",
+    "babel": "^6.5.2",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7",
+    "core-js": "^2.4.1",
+    "css-loader": "^0.26.1",
+    "es6": "0.0.7",
+    "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "node-sass": "^4.0.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "rxjs": "5.0.0-rc.4",
+    "sass-loader": "^4.1.0",
+    "style-loader": "^0.13.1",
+    "underscore": "^1.8.3",
+    "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+    "webpack": "^1.14.0"
+  }
+}
