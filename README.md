@@ -45,7 +45,7 @@ Use the provided API server to do the following:
 *  Update this README with simple instructions on how to run the app when you are finished
 * **BONUS** Test your code. This is nice to have, but not expected given the timeframe of the project
 
-Feel free to use any libraries that you want. You don't have to spend any time on design.
+Feel free to use any libraries that you want. **You don't have to spend any time on styling**.
 
 **We are looking for the app to be as feature-complete as possible, but be prepared to explain your code and why you made certain decisions. Enjoy!**
 
