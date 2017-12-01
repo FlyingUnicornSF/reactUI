@@ -37,7 +37,7 @@ app.get('/fills/:id', function (req, res) {
 
 app.get('/fills', function (req, res) {
   if (req.query.prescription_id) {
-    res.send(_.where(fills, { prescription_id: req.query.prescription_id }));
+    res.send(_.where(fills, { prescription_id: Number(req.query.prescription_id) }));
   } else {
     res.send(fills);
   }
