@@ -3,17 +3,14 @@ We have included a dataset that contains an array of patients, their prescriptio
 
 ```sh
 $ npm install
-$ webpack --watch
+$ npm start
 ```
 
-And run in a different pane:
-```sh
-$ node api.js
-```
+`npm start` runs `webpack --watch` and `node api.js` for you.
 
 ## API
 
-**The API has the following endpoints at localhost:8080:**
+**The API has the following endpoints at http://localhost:8080**
 
 `GET /users` returns all User objects
 
