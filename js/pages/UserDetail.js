@@ -52,23 +52,6 @@ class UserDetail extends Component {
   }
 };
 
-// import React from "react";
-
-// const UserDetail = (props) => {
-//   return (
-//       <div>
-//         Heellloo
-//          <pre>
-//           { JSON.stringify(props.user, null, 2) }
-//         </pre>
-//         {/*
-//         <div className="full-name">Full Name: {props.user.first_name} {props.user.last_name}</div>
-//         <div className="email">Email Addess: {props.user.email}</div>
-//         <div className="phone">Phone Number: {props.user.phone}</div>
-//         <div calssName="dob">Date of Birth: {props.user.date_of_birth}</div> */}
-//       </div>  
-//     );
-// }
 
 
 export default UserDetail;
