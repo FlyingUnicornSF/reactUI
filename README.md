@@ -1,7 +1,25 @@
-## Setup
-We have included a dataset that contains an array of patients, their prescriptions, and the fills for each prescription, as well as a simple API for that dataset. The API server will run locally and serve the bundled JavaScript and CSS after you run the following:
+## this project is based on a code challenge
+This project includes:
+react UI
+express
+express.Router
+vanilla JS xmlhttprequest
+jquary
+axios
 
-```sh
+## Express and Node
+The read me originally note, "You are not expected to understand or use Express or Node, and you can structure your javascript however you want."
+
+But then I realized I didn't understand express enough so I can use it in any setup presented to me. I know how to use it in full stack React project. It's preset for us.  I went over express during my full stack web dev class, but the class didn't go over anything about HTTP.  
+
+How can I fully understand express without knowing anything about HTTP??? 
+
+This project is build on top of the code challenge to practice and REALLY understand Express and everything else that comes with it while practicing more React. 
+
+## Setup
+The code challenge provided a dataset that contains an array of patients, their prescriptions, and the fills for each prescription, as well as a simple API for that dataset. The API server will run locally and serve the bundled JavaScript and CSS after you run the following:
+
+```
 $ npm install
 $ npm start
 ```
@@ -26,7 +44,8 @@ $ npm start
 
 ## UI
 
-We set up a basic html page in `public/index.html` that renders at `localhost:8080`, please add your UI there. You are not expected to understand or use Express or Node, and you can structure your javascript however you want. A single page javascript app is totally fine. We have included react, angular, and backbone, so feel free to use any one of them.
+a basic html page in `public/index.html` that renders at `localhost:8080` was giving and I added UI there. The read me originally note, "You are not expected to understand or use Express or Node, and you can structure your javascript however you want. A single page javascript app is totally fine. We have included react, angular, and backbone, so feel free to use any one of them."
+
 
 We are looking for you to build a dashboard where we can view these users and their details. Structure your app in the following way:
 

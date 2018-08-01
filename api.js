@@ -19,6 +19,9 @@ app.get('/users', function (req, res) {
   res.send(users);
 });
 
+/*
+Original 
+
 app.get('/prescriptions/:id', function (req, res) {
   res.send(_.findWhere(prescriptions, { id: Number(req.params.id) }));
 });
@@ -42,6 +45,8 @@ app.get('/fills', function (req, res) {
     res.send(fills);
   }
 });
+replace with router 
+*/
 
 app.listen(8080, function () {
   console.log('App is listening on port 8080!');
