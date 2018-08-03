@@ -6,7 +6,14 @@ const prescriptions = require('./prescriptions.json');
 const fills = require('./fills.json');
 
 router.get('/', function (req, res) {
-  res.sendFile('public/index.html');
+  // can't use this line anymore 
+  //res.sendFile('public/index.html');
+  // need to specify an absolute (instead of relative) 
+  // path and/or set root in the config object for res.sendFile().
+  // could use this with const path = require('path');
+  // res.sendFile(path.join(__dirname, '.public/index.html');
+  res.sendFile('index.html', { root: './public/' })
+
 });
 
 router.get('/users/:id', function (req, res) {

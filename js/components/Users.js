@@ -39,10 +39,11 @@ class Users extends Component {
   render() {
     return (
         <div>
-            <div className="users-container">
+          <div className="users-container">
+            <h3>Users</h3>
+            <p>click on a user to see their information</p>
               <UserList users={this.state.users}/>
             </div>
-
         </div>
 
     );

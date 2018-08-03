@@ -1,20 +1,20 @@
 ## this project is based on a code challenge
 This project includes:
-react UI
-express
-express.Router
-vanilla JS xmlhttprequest
-jquary
-axios
+- react UI
+- express
+- express.Router
+- vanilla JS xmlhttprequest
+- jquary (Under contruction)
+- axios (Under contruction)
 
 ## Express and Node
-The read me originally note, "You are not expected to understand or use Express or Node, and you can structure your javascript however you want."
+The original read me noted, "You are not expected to understand or use Express or Node, and you can structure your javascript however you want."
 
-But then I realized I didn't understand express enough so I can use it in any setup presented to me. I know how to use it in full stack React project. It's preset for us.  I went over express during my full stack web dev class, but the class didn't go over anything about HTTP.  
+But then I realized I didn't understand express enough so that I can use impliment it in any setup presented to me. I know how to use it in full stack React project. It's premade.  IMy full stack web dev class covered epxress, but nothing about about HTTP.  
 
 How can I fully understand express without knowing anything about HTTP??? 
 
-This project is build on top of the code challenge to practice and REALLY understand Express and everything else that comes with it while practicing more React. 
+So I read, and read, and continued this project: built on top of the code challenge to practice and REALLY understand Express and everything else that comes with it while practicing more React. 
 
 ## Setup
 The code challenge provided a dataset that contains an array of patients, their prescriptions, and the fills for each prescription, as well as a simple API for that dataset. The API server will run locally and serve the bundled JavaScript and CSS after you run the following:
@@ -25,6 +25,9 @@ $ npm start
 ```
 
 `npm start` runs `webpack --watch` and `node api.js` for you.
+
+# second setup for express.Router
+change  package.json line 5 "main" to `api_routes.js` and change line 8, under "scripts", "start" to `concurrently 'webpack --watch' 'node api_route.js' --kill-others --raw` then `npm start` `node api_router.js` for you.
 
 ## API
 

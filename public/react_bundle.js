@@ -25875,6 +25875,16 @@
 	        _react2.default.createElement(
 	          "div",
 	          { className: "users-container" },
+	          _react2.default.createElement(
+	            "h3",
+	            null,
+	            "Users"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "click on a user to see their information"
+	          ),
 	          _react2.default.createElement(_UserList2.default, { users: this.state.users })
 	        )
 	      );
@@ -25966,6 +25976,154 @@
 /* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Prescriptions = __webpack_require__(240);
+
+	var _Prescriptions2 = _interopRequireDefault(_Prescriptions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var UserDetail = function (_Component) {
+	  _inherits(UserDetail, _Component);
+
+	  function UserDetail(props) {
+	    _classCallCheck(this, UserDetail);
+
+	    var _this = _possibleConstructorReturn(this, (UserDetail.__proto__ || Object.getPrototypeOf(UserDetail)).call(this, props));
+
+	    _this.state = {
+	      user: {},
+	      prescriptions: []
+	    };
+	    return _this;
+	  }
+
+	  _createClass(UserDetail, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      this.getJSON(this.props.match.url).then(function (result) {
+	        _this2.setState({ user: result });
+	      });
+	      //prescriptions?user_id=1
+
+	      this.getJSON("/prescriptions/?user_id=" + this.props.match.params.id).then(function (result) {
+	        _this2.setState({ prescriptions: result });
+	      });
+	      // this.getJSON( "/prescriptions/" + this.props.match.params.id ).then((result) => {
+	      //   this.setState({prescriptions: result});
+	      // });
+	    }
+	  }, {
+	    key: 'getJSON',
+	    value: function getJSON(url) {
+	      return new Promise(function (resolve, reject) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("GET", url);
+	        xhr.onload = function () {
+	          return resolve(JSON.parse(xhr.responseText));
+	        };
+	        xhr.onerror = function () {
+	          return reject(xhr.statusText);
+	        };
+	        xhr.send();
+	      });
+	    }
+
+	    // not gonna lie, I totally took this one from open source repo 
+
+	  }, {
+	    key: 'gotoPage',
+	    value: function gotoPage(path) {
+	      location.href = '' + path;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'user-info-container' },
+	        _react2.default.createElement(
+	          'ul',
+	          { className: 'user-info' },
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            'First Name: ',
+	            this.state.user.first_name
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            'Last Name: ',
+	            this.state.user.last_name
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            'Email address: ',
+	            this.state.user.email
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            'Phone Number: ',
+	            this.state.user.phone
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            'Date of Birthe: ',
+	            this.state.user.date_of_birth
+	          ),
+	          _react2.default.createElement(_Prescriptions2.default, { prescriptions: this.state.prescriptions })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'details should show up here'
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'home', onClick: this.gotoPage.bind(this, "/") },
+	          'Home'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return UserDetail;
+	}(_react.Component);
+
+	;
+
+	exports.default = UserDetail;
+
+/***/ }),
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -25986,101 +26144,74 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var UserDetail = function (_Component) {
-	  _inherits(UserDetail, _Component);
+	var Prescriptions = function (_Component) {
+	  _inherits(Prescriptions, _Component);
 
-	  function UserDetail(props) {
-	    _classCallCheck(this, UserDetail);
+	  function Prescriptions(props) {
+	    _classCallCheck(this, Prescriptions);
 
-	    var _this = _possibleConstructorReturn(this, (UserDetail.__proto__ || Object.getPrototypeOf(UserDetail)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Prescriptions.__proto__ || Object.getPrototypeOf(Prescriptions)).call(this, props));
 
 	    _this.state = {
-	      user: {},
-	      prescriptions: {}
+	      prescriptions: "hello"
 	    };
 	    return _this;
 	  }
 
-	  _createClass(UserDetail, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {
-	      var _this2 = this;
+	  _createClass(Prescriptions, [{
+	    key: "componentDidUpdate",
 
-	      this.getJSON(this.props.match.url).then(function (result) {
-	        _this2.setState({ user: result });
-	      });
-	      this.getJSON("/prescriptions/" + this.props.match.params.id).then(function (result) {
-	        _this2.setState({ prescriptions: result });
-	      });
+	    /* Multiple ways to lead this page, but I purposely chose
+	      to pass prescrition props from the page.
+	      just to practice.
+	    */
+	    value: function componentDidUpdate(prevProps) {
+	      // this is straight from https://reactjs.org/docs/react-component.html#componentdidmount
+	      // This one was a bug that challenged me greatly. 
+	      // Typical usage (don't forget to compare props):
+	      if (this.props.prescriptions !== prevProps.prescriptions) {
+	        this.setState({ prescriptions: this.props.prescriptions });
+	      }
 	    }
 	  }, {
 	    key: "getJSON",
-	    value: function getJSON(url) {
-	      return new Promise(function (resolve, reject) {
-	        var xhr = new XMLHttpRequest();
-	        xhr.open("GET", url);
-	        xhr.onload = function () {
-	          return resolve(JSON.parse(xhr.responseText));
-	        };
-	        xhr.onerror = function () {
-	          return reject(xhr.statusText);
-	        };
-	        xhr.send();
-	      });
-	    }
+	    value: function getJSON() {}
+	    // <pre>
+	    // { JSON.stringify(this.props, null, 2) }
+	    // </pre>
+
 	  }, {
 	    key: "render",
 	    value: function render() {
+	      /* this console.log was key to the de-bugging. 
+	         this showed up three times with empty array 
+	         until it loaded the array with correct array! 
+	         someday I will giggle how I struggled with this... I hope.*/
+
+	      //console.log("in render", this.props)
 	      return _react2.default.createElement(
 	        "div",
-	        null,
+	        { className: "prescriptions" },
 	        _react2.default.createElement(
 	          "div",
-	          { className: "user-info" },
-	          "First Name: ",
-	          this.state.user.first_name,
-	          "Last Name: ",
-	          this.state.user.last_name,
-	          "Email address: ",
-	          this.state.user.email,
-	          "Phone Number: ",
-	          this.state.user.phone,
-	          "Date of Birthe: ",
-	          this.state.user.date_of_birth,
-	          "rx_number: ",
-	          this.state.prescriptions.rx_number,
-	          "medication_name: ",
-	          this.state.prescriptions.medication_name
+	          null,
+	          "I'm a chiled of this component!"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          null,
+	          "I'm also a chiled of this component!"
 	        )
 	      );
 	    }
 	  }]);
 
-	  return UserDetail;
+	  return Prescriptions;
 	}(_react.Component);
 
 	;
 
-	// import React from "react";
-
-	// const UserDetail = (props) => {
-	//   return (
-	//       <div>
-	//         Heellloo
-	//          <pre>
-	//           { JSON.stringify(props.user, null, 2) }
-	//         </pre>
-	//         {/*
-	//         <div className="full-name">Full Name: {props.user.first_name} {props.user.last_name}</div>
-	//         <div className="email">Email Addess: {props.user.email}</div>
-	//         <div className="phone">Phone Number: {props.user.phone}</div>
-	//         <div calssName="dob">Date of Birth: {props.user.date_of_birth}</div> */}
-	//       </div>  
-	//     );
-	// }
-
-
-	exports.default = UserDetail;
+	exports.default = Prescriptions;
 
 /***/ })
 /******/ ]);
