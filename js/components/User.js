@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const User = (props) => {
   return (
-      <Link to={"/users/" + props.user.id} className="user=details">
+      <Link to={"/users/" + props.user.id} className="user-details">
         <div className="full-name">Full Name: {props.user.first_name} {props.user.last_name}</div>
         {/* <pre>
           { JSON.stringify(props.user, null, 2) }

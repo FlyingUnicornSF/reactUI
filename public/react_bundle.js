@@ -25920,7 +25920,7 @@
 
 	var UserList = function UserList(props) {
 
-	  var itemsMapped = props.users.map(function (user) {
+	  var usersMapped = props.users.map(function (user) {
 	    console.log(user);
 	    return _react2.default.createElement(_User2.default, { key: user.id, user: user });
 	  });
@@ -25931,7 +25931,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    itemsMapped
+	    usersMapped
 	  );
 	};
 
@@ -25958,7 +25958,7 @@
 	var User = function User(props) {
 	  return _react2.default.createElement(
 	    _reactRouterDom.Link,
-	    { to: "/users/" + props.user.id, className: "user=details" },
+	    { to: "/users/" + props.user.id, className: "user-details" },
 	    _react2.default.createElement(
 	      "div",
 	      { className: "full-name" },
@@ -25988,9 +25988,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Prescriptions = __webpack_require__(240);
+	var _PrescriptionList = __webpack_require__(241);
 
-	var _Prescriptions2 = _interopRequireDefault(_Prescriptions);
+	var _PrescriptionList2 = _interopRequireDefault(_PrescriptionList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26023,14 +26023,10 @@
 	      this.getJSON(this.props.match.url).then(function (result) {
 	        _this2.setState({ user: result });
 	      });
-	      //prescriptions?user_id=1
 
 	      this.getJSON("/prescriptions/?user_id=" + this.props.match.params.id).then(function (result) {
 	        _this2.setState({ prescriptions: result });
 	      });
-	      // this.getJSON( "/prescriptions/" + this.props.match.params.id ).then((result) => {
-	      //   this.setState({prescriptions: result});
-	      // });
 	    }
 	  }, {
 	    key: 'getJSON',
@@ -26055,6 +26051,10 @@
 	    value: function gotoPage(path) {
 	      location.href = '' + path;
 	    }
+	    // <pre>
+	    // { JSON.stringify(this.props, null, 2) }
+	    // </pre>
+
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -26094,17 +26094,20 @@
 	            'Date of Birthe: ',
 	            this.state.user.date_of_birth
 	          ),
-	          _react2.default.createElement(_Prescriptions2.default, { prescriptions: this.state.prescriptions })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'details should show up here'
+	          _react2.default.createElement(
+	            _PrescriptionList2.default,
+	            { prescriptions: this.state.prescriptions },
+	            _react2.default.createElement(
+	              'div',
+	              { text: 'children' },
+	              ' React commend to use composition instead of inheritance like this. JSX tags in side of PrescriptionList, it get passed to PrescriptionList as childern. Including this paragrasph.'
+	            )
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'button',
 	          { className: 'home', onClick: this.gotoPage.bind(this, "/") },
-	          'Home'
+	          'Back to Home Page'
 	        )
 	      );
 	    }
@@ -26121,10 +26124,11 @@
 /* 237 */,
 /* 238 */,
 /* 239 */,
-/* 240 */
+/* 240 */,
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -26136,6 +26140,12 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Prescription = __webpack_require__(242);
+
+	var _Prescription2 = _interopRequireDefault(_Prescription);
+
+	var _elementAt = __webpack_require__(243);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26144,22 +26154,37 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Prescriptions = function (_Component) {
-	  _inherits(Prescriptions, _Component);
+	//import $ from "jquery";
+	// try jquary this time. 
+	// const prescriptionDetails = (props) => {
+	//   $.get( '/prescriptions/' + props.prescriptionID, function( data ) {
+	//     return data;
+	//     })
+	// }
 
-	  function Prescriptions(props) {
-	    _classCallCheck(this, Prescriptions);
 
-	    var _this = _possibleConstructorReturn(this, (Prescriptions.__proto__ || Object.getPrototypeOf(Prescriptions)).call(this, props));
+	var PrescriptionList = function (_Component) {
+	  _inherits(PrescriptionList, _Component);
+
+	  function PrescriptionList(props) {
+	    _classCallCheck(this, PrescriptionList);
+
+	    var _this = _possibleConstructorReturn(this, (PrescriptionList.__proto__ || Object.getPrototypeOf(PrescriptionList)).call(this, props));
 
 	    _this.state = {
-	      prescriptions: "hello"
+	      prescriptions: null,
+	      shouldRender: false,
+	      prescriptionID: null,
+	      fills: null,
+	      show: false
 	    };
+
+	    _this.handleClick = _this.handleClick.bind(_this);
 	    return _this;
 	  }
 
-	  _createClass(Prescriptions, [{
-	    key: "componentDidUpdate",
+	  _createClass(PrescriptionList, [{
+	    key: 'componentDidUpdate',
 
 	    /* Multiple ways to lead this page, but I purposely chose
 	      to pass prescrition props from the page.
@@ -26171,47 +26196,859 @@
 	      // Typical usage (don't forget to compare props):
 	      if (this.props.prescriptions !== prevProps.prescriptions) {
 	        this.setState({ prescriptions: this.props.prescriptions });
+	        this.setState({ shouldRender: true });
 	      }
 	    }
+	    // e is event target
+
 	  }, {
-	    key: "getJSON",
-	    value: function getJSON() {}
+	    key: 'handleClick',
+	    value: function handleClick(id, e) {
+	      var _this2 = this;
+
+	      // access to e.target here
+	      console.log("e.target.id", e.target.id);
+	      this.setState({ prescriptionID: e.target.id });
+	      // this is another way to XMLHttpRequest
+	      // using fetch
+	      var url = "/fills/" + e.target.id;
+	      fetch(url, {
+	        method: "GET"
+	      })
+	      // below line is needed because fetch is a promise
+	      // if you don't return response, it will hang waiting...
+	      .then(function (response) {
+	        return response.json();
+	      }).then(function (response) {
+	        return _this2.setState({ fills: response });
+	      }).then(this.setState({ show: true }));
+	    }
+	  }, {
+	    key: 'prescriptionDetails',
+	    value: function prescriptionDetails(prescriptionID) {
+	      var perscription = this.state.prescriptions.find(function (perscription) {
+	        // double = for a reason! NOT === 
+	        return perscription.id == prescriptionID;
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        Object.keys(perscription).map(function (key) {
+	          return _react2.default.createElement(
+	            'div',
+	            { key: key },
+	            key,
+	            ': ',
+	            perscription[key]
+	          );
+	        })
+	      );
+	    }
+
+	    /* 
+	    *  Clicking on a prescription should display on the same page more details 
+	    about that prescription as well as a list of that prescription's fills
+	    *  The displayed fills should be chronologically ordered by when they 
+	    were filled in descending order, and should include other basic information about the fill
+	    */
+
 	    // <pre>
 	    // { JSON.stringify(this.props, null, 2) }
 	    // </pre>
 
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      /* this console.log was key to the de-bugging. 
-	         this showed up three times with empty array 
-	         until it loaded the array with correct array! 
-	         someday I will giggle how I struggled with this... I hope.*/
 
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      /* this console.log was key to  de-bugging. 
+	         this showed up three times with empty array 
+	         until it loaded the array with correct array! */
 	      //console.log("in render", this.props)
+	      /* list of prescriptions can't load until props is loaded with the correct array
+	        added render state to make sure list loads only after state.prescriptions are updated. */
+	      if (this.state.shouldRender) {
+	        return (
+	          /* mapping function built in a div. It's a bit messy but then you don't have to scroll up to see what 
+	          it's mapping or make another component like UserList.js
+	          Also, this onclick handler: it's bined at the contructor, so it doesn't have to bind here.
+	          Some reasons I can't pass the this.handleClick(id, e) like it says in react document.
+	          */
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'prescriptions' },
+	            this.state.prescriptions.map(function (prescription) {
+	              return _react2.default.createElement(
+	                'div',
+	                { key: prescription.id, id: prescription.id, onClick: function onClick(e) {
+	                    return _this3.handleClick(prescription.id, e);
+	                  } },
+	                ' prescription: ',
+	                prescription.rx_number,
+	                ' medication name: ',
+	                prescription.medication_name
+	              );
+	            }),
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              this.state.show ? _react2.default.createElement(_Prescription2.default, { fillDetail: this.state.fills, prescriptionID: this.state.prescriptionID }) : null,
+	              this.state.show ? _react2.default.createElement(
+	                'div',
+	                null,
+	                this.state.prescriptionID
+	              ) : null,
+	              this.state.show ? _react2.default.createElement(
+	                'div',
+	                null,
+	                this.prescriptionDetails(this.state.prescriptionID),
+	                'YOO'
+	              ) : null
+	            )
+	          )
+	        );
+	      };
+
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "prescriptions" },
-	        _react2.default.createElement(
-	          "div",
-	          null,
-	          "I'm a chiled of this component!"
-	        ),
-	        _react2.default.createElement(
-	          "div",
-	          null,
-	          "I'm also a chiled of this component!"
-	        )
+	        'div',
+	        { className: 'loading' },
+	        ' loading..... '
 	      );
 	    }
 	  }]);
 
-	  return Prescriptions;
+	  return PrescriptionList;
 	}(_react.Component);
 
 	;
 
-	exports.default = Prescriptions;
+	exports.default = PrescriptionList;
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Prescription = function Prescription(props) {
+	  if (!props.fillDetail) return _react2.default.createElement(
+	    'div',
+	    null,
+	    'Loading....'
+	  );
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    Object.keys(props.fillDetail).map(function (key) {
+	      return _react2.default.createElement(
+	        'div',
+	        { key: key },
+	        key,
+	        ': ',
+	        props.fillDetail[key]
+	      );
+	    })
+	  );
+	};
+
+	//Clicking on a prescription should display on the same page 
+	//more details about that prescription as well as 
+	//a list of that prescription's fills
+
+	exports.default = Prescription;
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(244);
+	var ArgumentOutOfRangeError_1 = __webpack_require__(255);
+	/**
+	 * Emits the single value at the specified `index` in a sequence of emissions
+	 * from the source Observable.
+	 *
+	 * <span class="informal">Emits only the i-th value, then completes.</span>
+	 *
+	 * <img src="./img/elementAt.png" width="100%">
+	 *
+	 * `elementAt` returns an Observable that emits the item at the specified
+	 * `index` in the source Observable, or a default value if that `index` is out
+	 * of range and the `default` argument is provided. If the `default` argument is
+	 * not given and the `index` is out of range, the output Observable will emit an
+	 * `ArgumentOutOfRangeError` error.
+	 *
+	 * @example <caption>Emit only the third click event</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var result = clicks.elementAt(2);
+	 * result.subscribe(x => console.log(x));
+	 *
+	 * @see {@link first}
+	 * @see {@link last}
+	 * @see {@link skip}
+	 * @see {@link single}
+	 * @see {@link take}
+	 *
+	 * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
+	 * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0` or the
+	 * Observable has completed before emitting the i-th `next` notification.
+	 *
+	 * @param {number} index Is the number `i` for the i-th source emission that has
+	 * happened since the subscription, starting from the number `0`.
+	 * @param {T} [defaultValue] The default value returned for missing indices.
+	 * @return {Observable} An Observable that emits a single item, if it is found.
+	 * Otherwise, will emit the default value if given. If not, then emits an error.
+	 * @method elementAt
+	 * @owner Observable
+	 */
+	function elementAt(index, defaultValue) {
+	    return this.lift(new ElementAtOperator(index, defaultValue));
+	}
+	exports.elementAt = elementAt;
+	var ElementAtOperator = (function () {
+	    function ElementAtOperator(index, defaultValue) {
+	        this.index = index;
+	        this.defaultValue = defaultValue;
+	        if (index < 0) {
+	            throw new ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
+	        }
+	    }
+	    ElementAtOperator.prototype.call = function (subscriber, source) {
+	        return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
+	    };
+	    return ElementAtOperator;
+	}());
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var ElementAtSubscriber = (function (_super) {
+	    __extends(ElementAtSubscriber, _super);
+	    function ElementAtSubscriber(destination, index, defaultValue) {
+	        _super.call(this, destination);
+	        this.index = index;
+	        this.defaultValue = defaultValue;
+	    }
+	    ElementAtSubscriber.prototype._next = function (x) {
+	        if (this.index-- === 0) {
+	            this.destination.next(x);
+	            this.destination.complete();
+	        }
+	    };
+	    ElementAtSubscriber.prototype._complete = function () {
+	        var destination = this.destination;
+	        if (this.index >= 0) {
+	            if (typeof this.defaultValue !== 'undefined') {
+	                destination.next(this.defaultValue);
+	            }
+	            else {
+	                destination.error(new ArgumentOutOfRangeError_1.ArgumentOutOfRangeError);
+	            }
+	        }
+	        destination.complete();
+	    };
+	    return ElementAtSubscriber;
+	}(Subscriber_1.Subscriber));
+	//# sourceMappingURL=elementAt.js.map
+
+/***/ }),
+/* 244 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var isFunction_1 = __webpack_require__(245);
+	var Subscription_1 = __webpack_require__(246);
+	var Observer_1 = __webpack_require__(252);
+	var rxSubscriber_1 = __webpack_require__(253);
+	/**
+	 * Implements the {@link Observer} interface and extends the
+	 * {@link Subscription} class. While the {@link Observer} is the public API for
+	 * consuming the values of an {@link Observable}, all Observers get converted to
+	 * a Subscriber, in order to provide Subscription-like capabilities such as
+	 * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
+	 * implementing operators, but it is rarely used as a public API.
+	 *
+	 * @class Subscriber<T>
+	 */
+	var Subscriber = (function (_super) {
+	    __extends(Subscriber, _super);
+	    /**
+	     * @param {Observer|function(value: T): void} [destinationOrNext] A partially
+	     * defined Observer or a `next` callback function.
+	     * @param {function(e: ?any): void} [error] The `error` callback of an
+	     * Observer.
+	     * @param {function(): void} [complete] The `complete` callback of an
+	     * Observer.
+	     */
+	    function Subscriber(destinationOrNext, error, complete) {
+	        _super.call(this);
+	        this.syncErrorValue = null;
+	        this.syncErrorThrown = false;
+	        this.syncErrorThrowable = false;
+	        this.isStopped = false;
+	        switch (arguments.length) {
+	            case 0:
+	                this.destination = Observer_1.empty;
+	                break;
+	            case 1:
+	                if (!destinationOrNext) {
+	                    this.destination = Observer_1.empty;
+	                    break;
+	                }
+	                if (typeof destinationOrNext === 'object') {
+	                    if (destinationOrNext instanceof Subscriber) {
+	                        this.destination = destinationOrNext;
+	                        this.destination.add(this);
+	                    }
+	                    else {
+	                        this.syncErrorThrowable = true;
+	                        this.destination = new SafeSubscriber(this, destinationOrNext);
+	                    }
+	                    break;
+	                }
+	            default:
+	                this.syncErrorThrowable = true;
+	                this.destination = new SafeSubscriber(this, destinationOrNext, error, complete);
+	                break;
+	        }
+	    }
+	    Subscriber.prototype[rxSubscriber_1.$$rxSubscriber] = function () { return this; };
+	    /**
+	     * A static factory for a Subscriber, given a (potentially partial) definition
+	     * of an Observer.
+	     * @param {function(x: ?T): void} [next] The `next` callback of an Observer.
+	     * @param {function(e: ?any): void} [error] The `error` callback of an
+	     * Observer.
+	     * @param {function(): void} [complete] The `complete` callback of an
+	     * Observer.
+	     * @return {Subscriber<T>} A Subscriber wrapping the (partially defined)
+	     * Observer represented by the given arguments.
+	     */
+	    Subscriber.create = function (next, error, complete) {
+	        var subscriber = new Subscriber(next, error, complete);
+	        subscriber.syncErrorThrowable = false;
+	        return subscriber;
+	    };
+	    /**
+	     * The {@link Observer} callback to receive notifications of type `next` from
+	     * the Observable, with a value. The Observable may call this method 0 or more
+	     * times.
+	     * @param {T} [value] The `next` value.
+	     * @return {void}
+	     */
+	    Subscriber.prototype.next = function (value) {
+	        if (!this.isStopped) {
+	            this._next(value);
+	        }
+	    };
+	    /**
+	     * The {@link Observer} callback to receive notifications of type `error` from
+	     * the Observable, with an attached {@link Error}. Notifies the Observer that
+	     * the Observable has experienced an error condition.
+	     * @param {any} [err] The `error` exception.
+	     * @return {void}
+	     */
+	    Subscriber.prototype.error = function (err) {
+	        if (!this.isStopped) {
+	            this.isStopped = true;
+	            this._error(err);
+	        }
+	    };
+	    /**
+	     * The {@link Observer} callback to receive a valueless notification of type
+	     * `complete` from the Observable. Notifies the Observer that the Observable
+	     * has finished sending push-based notifications.
+	     * @return {void}
+	     */
+	    Subscriber.prototype.complete = function () {
+	        if (!this.isStopped) {
+	            this.isStopped = true;
+	            this._complete();
+	        }
+	    };
+	    Subscriber.prototype.unsubscribe = function () {
+	        if (this.closed) {
+	            return;
+	        }
+	        this.isStopped = true;
+	        _super.prototype.unsubscribe.call(this);
+	    };
+	    Subscriber.prototype._next = function (value) {
+	        this.destination.next(value);
+	    };
+	    Subscriber.prototype._error = function (err) {
+	        this.destination.error(err);
+	        this.unsubscribe();
+	    };
+	    Subscriber.prototype._complete = function () {
+	        this.destination.complete();
+	        this.unsubscribe();
+	    };
+	    return Subscriber;
+	}(Subscription_1.Subscription));
+	exports.Subscriber = Subscriber;
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var SafeSubscriber = (function (_super) {
+	    __extends(SafeSubscriber, _super);
+	    function SafeSubscriber(_parent, observerOrNext, error, complete) {
+	        _super.call(this);
+	        this._parent = _parent;
+	        var next;
+	        var context = this;
+	        if (isFunction_1.isFunction(observerOrNext)) {
+	            next = observerOrNext;
+	        }
+	        else if (observerOrNext) {
+	            context = observerOrNext;
+	            next = observerOrNext.next;
+	            error = observerOrNext.error;
+	            complete = observerOrNext.complete;
+	            if (isFunction_1.isFunction(context.unsubscribe)) {
+	                this.add(context.unsubscribe.bind(context));
+	            }
+	            context.unsubscribe = this.unsubscribe.bind(this);
+	        }
+	        this._context = context;
+	        this._next = next;
+	        this._error = error;
+	        this._complete = complete;
+	    }
+	    SafeSubscriber.prototype.next = function (value) {
+	        if (!this.isStopped && this._next) {
+	            var _parent = this._parent;
+	            if (!_parent.syncErrorThrowable) {
+	                this.__tryOrUnsub(this._next, value);
+	            }
+	            else if (this.__tryOrSetError(_parent, this._next, value)) {
+	                this.unsubscribe();
+	            }
+	        }
+	    };
+	    SafeSubscriber.prototype.error = function (err) {
+	        if (!this.isStopped) {
+	            var _parent = this._parent;
+	            if (this._error) {
+	                if (!_parent.syncErrorThrowable) {
+	                    this.__tryOrUnsub(this._error, err);
+	                    this.unsubscribe();
+	                }
+	                else {
+	                    this.__tryOrSetError(_parent, this._error, err);
+	                    this.unsubscribe();
+	                }
+	            }
+	            else if (!_parent.syncErrorThrowable) {
+	                this.unsubscribe();
+	                throw err;
+	            }
+	            else {
+	                _parent.syncErrorValue = err;
+	                _parent.syncErrorThrown = true;
+	                this.unsubscribe();
+	            }
+	        }
+	    };
+	    SafeSubscriber.prototype.complete = function () {
+	        if (!this.isStopped) {
+	            var _parent = this._parent;
+	            if (this._complete) {
+	                if (!_parent.syncErrorThrowable) {
+	                    this.__tryOrUnsub(this._complete);
+	                    this.unsubscribe();
+	                }
+	                else {
+	                    this.__tryOrSetError(_parent, this._complete);
+	                    this.unsubscribe();
+	                }
+	            }
+	            else {
+	                this.unsubscribe();
+	            }
+	        }
+	    };
+	    SafeSubscriber.prototype.__tryOrUnsub = function (fn, value) {
+	        try {
+	            fn.call(this._context, value);
+	        }
+	        catch (err) {
+	            this.unsubscribe();
+	            throw err;
+	        }
+	    };
+	    SafeSubscriber.prototype.__tryOrSetError = function (parent, fn, value) {
+	        try {
+	            fn.call(this._context, value);
+	        }
+	        catch (err) {
+	            parent.syncErrorValue = err;
+	            parent.syncErrorThrown = true;
+	            return true;
+	        }
+	        return false;
+	    };
+	    SafeSubscriber.prototype._unsubscribe = function () {
+	        var _parent = this._parent;
+	        this._context = null;
+	        this._parent = null;
+	        _parent.unsubscribe();
+	    };
+	    return SafeSubscriber;
+	}(Subscriber));
+	//# sourceMappingURL=Subscriber.js.map
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	function isFunction(x) {
+	    return typeof x === 'function';
+	}
+	exports.isFunction = isFunction;
+	//# sourceMappingURL=isFunction.js.map
+
+/***/ }),
+/* 246 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var isArray_1 = __webpack_require__(247);
+	var isObject_1 = __webpack_require__(248);
+	var isFunction_1 = __webpack_require__(245);
+	var tryCatch_1 = __webpack_require__(249);
+	var errorObject_1 = __webpack_require__(250);
+	var UnsubscriptionError_1 = __webpack_require__(251);
+	/**
+	 * Represents a disposable resource, such as the execution of an Observable. A
+	 * Subscription has one important method, `unsubscribe`, that takes no argument
+	 * and just disposes the resource held by the subscription.
+	 *
+	 * Additionally, subscriptions may be grouped together through the `add()`
+	 * method, which will attach a child Subscription to the current Subscription.
+	 * When a Subscription is unsubscribed, all its children (and its grandchildren)
+	 * will be unsubscribed as well.
+	 *
+	 * @class Subscription
+	 */
+	var Subscription = (function () {
+	    /**
+	     * @param {function(): void} [unsubscribe] A function describing how to
+	     * perform the disposal of resources when the `unsubscribe` method is called.
+	     */
+	    function Subscription(unsubscribe) {
+	        /**
+	         * A flag to indicate whether this Subscription has already been unsubscribed.
+	         * @type {boolean}
+	         */
+	        this.closed = false;
+	        if (unsubscribe) {
+	            this._unsubscribe = unsubscribe;
+	        }
+	    }
+	    /**
+	     * Disposes the resources held by the subscription. May, for instance, cancel
+	     * an ongoing Observable execution or cancel any other type of work that
+	     * started when the Subscription was created.
+	     * @return {void}
+	     */
+	    Subscription.prototype.unsubscribe = function () {
+	        var hasErrors = false;
+	        var errors;
+	        if (this.closed) {
+	            return;
+	        }
+	        this.closed = true;
+	        var _a = this, _unsubscribe = _a._unsubscribe, _subscriptions = _a._subscriptions;
+	        this._subscriptions = null;
+	        if (isFunction_1.isFunction(_unsubscribe)) {
+	            var trial = tryCatch_1.tryCatch(_unsubscribe).call(this);
+	            if (trial === errorObject_1.errorObject) {
+	                hasErrors = true;
+	                (errors = errors || []).push(errorObject_1.errorObject.e);
+	            }
+	        }
+	        if (isArray_1.isArray(_subscriptions)) {
+	            var index = -1;
+	            var len = _subscriptions.length;
+	            while (++index < len) {
+	                var sub = _subscriptions[index];
+	                if (isObject_1.isObject(sub)) {
+	                    var trial = tryCatch_1.tryCatch(sub.unsubscribe).call(sub);
+	                    if (trial === errorObject_1.errorObject) {
+	                        hasErrors = true;
+	                        errors = errors || [];
+	                        var err = errorObject_1.errorObject.e;
+	                        if (err instanceof UnsubscriptionError_1.UnsubscriptionError) {
+	                            errors = errors.concat(err.errors);
+	                        }
+	                        else {
+	                            errors.push(err);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        if (hasErrors) {
+	            throw new UnsubscriptionError_1.UnsubscriptionError(errors);
+	        }
+	    };
+	    /**
+	     * Adds a tear down to be called during the unsubscribe() of this
+	     * Subscription.
+	     *
+	     * If the tear down being added is a subscription that is already
+	     * unsubscribed, is the same reference `add` is being called on, or is
+	     * `Subscription.EMPTY`, it will not be added.
+	     *
+	     * If this subscription is already in an `closed` state, the passed
+	     * tear down logic will be executed immediately.
+	     *
+	     * @param {TeardownLogic} teardown The additional logic to execute on
+	     * teardown.
+	     * @return {Subscription} Returns the Subscription used or created to be
+	     * added to the inner subscriptions list. This Subscription can be used with
+	     * `remove()` to remove the passed teardown logic from the inner subscriptions
+	     * list.
+	     */
+	    Subscription.prototype.add = function (teardown) {
+	        if (!teardown || (teardown === Subscription.EMPTY)) {
+	            return Subscription.EMPTY;
+	        }
+	        if (teardown === this) {
+	            return this;
+	        }
+	        var sub = teardown;
+	        switch (typeof teardown) {
+	            case 'function':
+	                sub = new Subscription(teardown);
+	            case 'object':
+	                if (sub.closed || typeof sub.unsubscribe !== 'function') {
+	                    break;
+	                }
+	                else if (this.closed) {
+	                    sub.unsubscribe();
+	                }
+	                else {
+	                    (this._subscriptions || (this._subscriptions = [])).push(sub);
+	                }
+	                break;
+	            default:
+	                throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
+	        }
+	        return sub;
+	    };
+	    /**
+	     * Removes a Subscription from the internal list of subscriptions that will
+	     * unsubscribe during the unsubscribe process of this Subscription.
+	     * @param {Subscription} subscription The subscription to remove.
+	     * @return {void}
+	     */
+	    Subscription.prototype.remove = function (subscription) {
+	        // HACK: This might be redundant because of the logic in `add()`
+	        if (subscription == null || (subscription === this) || (subscription === Subscription.EMPTY)) {
+	            return;
+	        }
+	        var subscriptions = this._subscriptions;
+	        if (subscriptions) {
+	            var subscriptionIndex = subscriptions.indexOf(subscription);
+	            if (subscriptionIndex !== -1) {
+	                subscriptions.splice(subscriptionIndex, 1);
+	            }
+	        }
+	    };
+	    Subscription.EMPTY = (function (empty) {
+	        empty.closed = true;
+	        return empty;
+	    }(new Subscription()));
+	    return Subscription;
+	}());
+	exports.Subscription = Subscription;
+	//# sourceMappingURL=Subscription.js.map
+
+/***/ }),
+/* 247 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	exports.isArray = Array.isArray || (function (x) { return x && typeof x.length === 'number'; });
+	//# sourceMappingURL=isArray.js.map
+
+/***/ }),
+/* 248 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	function isObject(x) {
+	    return x != null && typeof x === 'object';
+	}
+	exports.isObject = isObject;
+	//# sourceMappingURL=isObject.js.map
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var errorObject_1 = __webpack_require__(250);
+	var tryCatchTarget;
+	function tryCatcher() {
+	    try {
+	        return tryCatchTarget.apply(this, arguments);
+	    }
+	    catch (e) {
+	        errorObject_1.errorObject.e = e;
+	        return errorObject_1.errorObject;
+	    }
+	}
+	function tryCatch(fn) {
+	    tryCatchTarget = fn;
+	    return tryCatcher;
+	}
+	exports.tryCatch = tryCatch;
+	;
+	//# sourceMappingURL=tryCatch.js.map
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	// typeof any so that it we don't have to cast when comparing a result to the error object
+	exports.errorObject = { e: {} };
+	//# sourceMappingURL=errorObject.js.map
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/**
+	 * An error thrown when one or more errors have occurred during the
+	 * `unsubscribe` of a {@link Subscription}.
+	 */
+	var UnsubscriptionError = (function (_super) {
+	    __extends(UnsubscriptionError, _super);
+	    function UnsubscriptionError(errors) {
+	        _super.call(this);
+	        this.errors = errors;
+	        var err = Error.call(this, errors ?
+	            errors.length + " errors occurred during unsubscription:\n  " + errors.map(function (err, i) { return ((i + 1) + ") " + err.toString()); }).join('\n  ') : '');
+	        this.name = err.name = 'UnsubscriptionError';
+	        this.stack = err.stack;
+	        this.message = err.message;
+	    }
+	    return UnsubscriptionError;
+	}(Error));
+	exports.UnsubscriptionError = UnsubscriptionError;
+	//# sourceMappingURL=UnsubscriptionError.js.map
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	exports.empty = {
+	    closed: true,
+	    next: function (value) { },
+	    error: function (err) { throw err; },
+	    complete: function () { }
+	};
+	//# sourceMappingURL=Observer.js.map
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var root_1 = __webpack_require__(254);
+	var Symbol = root_1.root.Symbol;
+	exports.$$rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'function') ?
+	    Symbol.for('rxSubscriber') : '@@rxSubscriber';
+	//# sourceMappingURL=rxSubscriber.js.map
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+	/**
+	 * window: browser in DOM main thread
+	 * self: browser in WebWorker
+	 * global: Node.js/other
+	 */
+	exports.root = (typeof window == 'object' && window.window === window && window
+	    || typeof self == 'object' && self.self === self && self
+	    || typeof global == 'object' && global.global === global && global);
+	if (!exports.root) {
+	    throw new Error('RxJS could not find any global context (window, self, global)');
+	}
+	//# sourceMappingURL=root.js.map
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/**
+	 * An error thrown when an element was queried at a certain index of an
+	 * Observable, but no such index or position exists in that sequence.
+	 *
+	 * @see {@link elementAt}
+	 * @see {@link take}
+	 * @see {@link takeLast}
+	 *
+	 * @class ArgumentOutOfRangeError
+	 */
+	var ArgumentOutOfRangeError = (function (_super) {
+	    __extends(ArgumentOutOfRangeError, _super);
+	    function ArgumentOutOfRangeError() {
+	        var err = _super.call(this, 'argument out of range');
+	        this.name = err.name = 'ArgumentOutOfRangeError';
+	        this.stack = err.stack;
+	        this.message = err.message;
+	    }
+	    return ArgumentOutOfRangeError;
+	}(Error));
+	exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError;
+	//# sourceMappingURL=ArgumentOutOfRangeError.js.map
 
 /***/ })
 /******/ ]);

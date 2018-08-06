@@ -3,7 +3,7 @@ import User from './User';
 
 const UserList = (props) => {
 
-    const itemsMapped = props.users.map((user) =>{
+    const usersMapped = props.users.map((user) =>{
       console.log(user)
       return <User key={user.id} user={user}/>
     });
@@ -13,7 +13,7 @@ const UserList = (props) => {
 
   return(
     <div> 
-      {itemsMapped} 
+      {usersMapped} 
     </div>
   );
 };

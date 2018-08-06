@@ -9,6 +9,6 @@ app.use(apiRoutes);
 app.use(express.static('public'));
 
 
-app.listen(3030, function () {
-  console.log('App is listening on port 3030!');
+app.listen(3000, function () {
+  console.log('App is listening on port 3000!');
 });
